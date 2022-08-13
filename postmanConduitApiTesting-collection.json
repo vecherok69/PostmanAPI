@@ -1,0 +1,1699 @@
+{
+	"info": {
+		"_postman_id": "0766639f-8f23-458c-b14c-05fd008553d5",
+		"name": "Practice: Postman test project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22199715"
+	},
+	"item": [
+		{
+			"name": "Registration",
+			"item": [
+				{
+					"name": "successfulRegistration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"eval(globals.basicTests)();\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"localEmail\", pm.variables.replaceIn('{{$randomEmail}}').toLowerCase());\r",
+									"pm.environment.set(\"localUserName\", pm.variables.replaceIn('{{$randomUserName}}'));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": {\r\n        \"username\": \"{{localUserName}}\",\r\n        \"email\": \"{{localEmail}}\",\r\n        \"password\": \"{{localPassword}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}users",
+							"host": [
+								"{{url}}users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "blankPasswordRegistr",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.negativeTest422)();\r",
+									"pm.test(\"Password can't be blank error message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.errors.password[0]).to.deep.equal('can\\'t be blank');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": {\r\n        \"username\": \"{{localUserName}}\",\r\n        \"email\": \"{{localEmail}}\",\r\n        \"password\": \" \"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}users",
+							"host": [
+								"{{url}}users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "blankUserNameRegistr",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"eval(globals.negativeTest422)();\r",
+									"pm.test(\"UserName can't be blank error message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.errors.username[0]).to.deep.equal('can\\'t be blank');\r",
+									"});\r",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": {\r\n        \"username\": \"\",\r\n        \"email\": \"{{localEmail}}\",\r\n        \"password\": \"{{localPassword}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}users",
+							"host": [
+								"{{url}}users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "blankEmailRegistr",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"eval(globals.negativeTest422)();\r",
+									"pm.test(\"Email can't be blank error message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.errors.email[0]).to.deep.equal('can\\'t be blank');\r",
+									"});\r",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": {\r\n        \"username\": \"{{localUserName}}\",\r\n        \"email\": \"\",\r\n        \"password\": \"{{localPassword}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}users",
+							"host": [
+								"{{url}}users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "loginRegistEmail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"email\": \"{{localEmail}}\",\n        \"password\": \"{{localPassword}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}users/login",
+							"host": [
+								"{{url}}users"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loginNotRegisterEmail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Check error message with email\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.errors).to.have.all.keys('email or password');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"email\": \"{{$randomEmail}}\",\n        \"password\": \"{{localPassword}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}users/login",
+							"host": [
+								"{{url}}users"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "blankEmailLogin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"pm.test(\"Check error message with email\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.errors).to.have.all.keys('email');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"email\": \" \",\n        \"password\": \"{{localPassword}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}users/login",
+							"host": [
+								"{{url}}users"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "blankPasswordLogin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.negativeTest422)();",
+									"",
+									"pm.test(\"Check error message with email\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.errors).to.have.all.keys('password');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"email\": \"{{localEmail}}\",\n        \"password\": \" \"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}users/login",
+							"host": [
+								"{{url}}users"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Articles",
+			"item": [
+				{
+					"name": "createArticle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.basicTests)();\r",
+									"\r",
+									"pm.environment.set(\"localSlug\", pm.response.json().article.slug);\r",
+									"\r",
+									"eval(environment.deleteArticle)();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.registerNew)();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"article\": {\r\n        \"title\": \"{{$randomJobTitle}}\",\r\n        \"description\": \"{{$randomLoremSentence}}\",\r\n        \"body\": \"{{$randomLoremParagraph}}\",\r\n        \"tagList\": []\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}articles",
+							"host": [
+								"{{url}}articles"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createArticleOneSymbTitle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.basicTests)();\r",
+									"\r",
+									"pm.environment.set(\"localSlug\", pm.response.json().article.slug);\r",
+									"\r",
+									"eval(environment.deleteArticle)();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.registerNew)();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"article\": {\r\n        \"title\": \"О\",\r\n        \"description\": \"{{$randomLoremSentence}}\",\r\n        \"body\": \"{{$randomLoremParagraph}}\",\r\n        \"tagList\": []\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}articles",
+							"host": [
+								"{{url}}articles"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createArticleOneSymbDescript",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.basicTests)();\r",
+									"\r",
+									"pm.environment.set(\"localSlug\", pm.response.json().article.slug);\r",
+									"\r",
+									"eval(environment.deleteArticle)();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.registerNew)();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"article\": {\r\n        \"title\": \"{{$randomJobTitle}}\",\r\n        \"description\": \"1\",\r\n        \"body\": \"{{$randomLoremParagraph}}\",\r\n        \"tagList\": []\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}articles",
+							"host": [
+								"{{url}}articles"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createArticleOneSymbBody",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.basicTests)();\r",
+									"\r",
+									"pm.environment.set(\"localSlug\", pm.response.json().article.slug);\r",
+									"\r",
+									"eval(environment.deleteArticle)();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.registerNew)();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"article\": {\r\n        \"title\": \"{{$randomJobTitle}}\",\r\n        \"description\": \"{{$randomLoremSentence}}\",\r\n        \"body\": \"1\",\r\n        \"tagList\": []\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}articles",
+							"host": [
+								"{{url}}articles"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createArticleBlankTitle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.negativeTest422)();\r",
+									"\r",
+									"pm.test(\"Title can't be blank error message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.errors.title[0]).to.deep.equal('can\\'t be blank');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.registerNew)();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"article\": {\r\n        \"title\": \"\",\r\n        \"description\": \"{{$randomLoremSentence}}\",\r\n        \"body\": \"{{$randomLoremParagraph}}\",\r\n        \"tagList\": []\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}articles",
+							"host": [
+								"{{url}}articles"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createArticleBlankDescript",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.negativeTest422)();\r",
+									"\r",
+									"pm.test(\"Description can't be blank error message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.errors.description[0]).to.deep.equal('can\\'t be blank');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.registerNew)();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"article\": {\r\n        \"title\": \"{{$randomJobTitle}}\",\r\n        \"description\": \"\",\r\n        \"body\": \"{{$randomLoremParagraph}}\",\r\n        \"tagList\": []\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}articles",
+							"host": [
+								"{{url}}articles"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createArticleBlankBody",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.negativeTest422)();\r",
+									"\r",
+									"pm.test(\"Body can't be blank error message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.errors.body[0]).to.deep.equal('can\\'t be blank');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.registerNew)();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"article\": {\r\n        \"title\": \"{{$randomJobTitle}}\",\r\n        \"description\": \"{{$randomLoremSentence}}\",\r\n        \"body\": \"\",\r\n        \"tagList\": []\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}articles",
+							"host": [
+								"{{url}}articles"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteArticle",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.registerNew)();",
+									"setTimeout(function(){ ",
+									"    eval(environment.createArticle)() ",
+									"}, 1200);",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.basicTests)();\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}articles/{{localSlug}}",
+							"host": [
+								"{{url}}articles"
+							],
+							"path": [
+								"{{localSlug}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteAnotherUserArticle",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.registerSecond)();\r",
+									"eval(environment.createArticleSecond)();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}articles/{{localSlugSecond}}",
+							"host": [
+								"{{url}}articles"
+							],
+							"path": [
+								"{{localSlugSecond}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Comment",
+			"item": [
+				{
+					"name": "createComment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.basicTests)();",
+									"",
+									"pm.environment.set(\"commentId\",pm.response.json().comment.id);",
+									"",
+									"eval(environment.deleteComment)();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.registerNew)();",
+									"eval(environment.createArticle)();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\": {\n        \"body\": \"{{$randomWord}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}articles/{{localSlug}}/comments",
+							"host": [
+								"{{url}}articles"
+							],
+							"path": [
+								"{{localSlug}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createCommentOnlyLoginUser",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.createArticle)();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Check error message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.deep.equal('missing authorization credentials');",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{localToken}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\": {\n        \"body\": \"{{$randomLoremSentence}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}articles/{{localSlug}}/comments",
+							"host": [
+								"{{url}}articles"
+							],
+							"path": [
+								"{{localSlug}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createCommentOneSymb",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.registerNew)();",
+									"eval(environment.createArticle)();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.basicTests)();",
+									"",
+									"pm.environment.set(\"commentId\",pm.response.json().comment.id);",
+									"",
+									"eval(environment.deleteComment)();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\": {\n        \"body\": \"f\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}articles/{{localSlug}}/comments",
+							"host": [
+								"{{url}}articles"
+							],
+							"path": [
+								"{{localSlug}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "notCreateBlankComment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.registerNew)();",
+									"eval(environment.createArticle)();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.negativeTest422)();",
+									"",
+									"pm.test(\"UserName can't be blank error message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.errors.body[0]).to.deep.equal('can\\'t be blank');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\": {\n        \"body\": \"\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}articles/{{localSlug}}/comments",
+							"host": [
+								"{{url}}articles"
+							],
+							"path": [
+								"{{localSlug}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteComment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"setTimeout(function(){ ",
+									"    eval(environment.createArticle)() ",
+									"}, 1000); ",
+									"setTimeout(function(){ ",
+									"    eval(environment.createComment)() ",
+									"}, 1500); ",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.basicTests)();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}articles/{{localSlug}}/comments/{{commentId}}",
+							"host": [
+								"{{url}}articles"
+							],
+							"path": [
+								"{{localSlug}}",
+								"comments",
+								"{{commentId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteAnotherUserComment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"setTimeout(function(){ \r",
+									"    eval(environment.registerSecond)() \r",
+									"}, 1200); \r",
+									"setTimeout(function(){ \r",
+									"    eval(environment.createArticleSecond)() \r",
+									"}, 1500); \r",
+									"setTimeout(function(){ \r",
+									"    eval(environment.createCommentSecond)() \r",
+									"}, 1700); \r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}articles/{{localSlugSecond}}/comments/{{commentIdSecond}}",
+							"host": [
+								"{{url}}articles"
+							],
+							"path": [
+								"{{localSlugSecond}}",
+								"comments",
+								"{{commentIdSecond}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Follow",
+			"item": [
+				{
+					"name": "followOtherUsers",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.registerNew)();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.basicTests)();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}profiles/user/follow",
+							"host": [
+								"{{url}}profiles"
+							],
+							"path": [
+								"user",
+								"follow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unfollowOtherUsers",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.registerNew)();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.basicTests)();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}profiles/user/follow",
+							"host": [
+								"{{url}}profiles"
+							],
+							"path": [
+								"user",
+								"follow"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Like",
+			"item": [
+				{
+					"name": "likeArticle",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.createArticle)();",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.basicTests)();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}articles/{{localSlug}}/favorite",
+							"host": [
+								"{{url}}articles"
+							],
+							"path": [
+								"{{localSlug}}",
+								"favorite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dislikeArticle",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(environment.createArticle)();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(globals.basicTests)();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{localToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}articles/{{localSlug}}/favorite",
+							"host": [
+								"{{url}}articles"
+							],
+							"path": [
+								"{{localSlug}}",
+								"favorite"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"eval(environment.registerNew)();",
+							"",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"postman.setGlobalVariable(\"basicTests\", () => {",
+					"    pm.test(\"Status code is 200\", function () {",
+					"        pm.response.to.have.status(200);",
+					"    });",
+					"    pm.test(\"Response time is less than 500ms\", function () {",
+					"        pm.expect(pm.response.responseTime).to.be.below(500);",
+					"    });   ",
+					"});",
+					"postman.setGlobalVariable(\"negativeTest422\", () => {",
+					"    pm.test(\"Status code is 422\", function () {",
+					"        pm.response.to.have.status(422);",
+					"    });  ",
+					"});",
+					"//registration",
+					"postman.setEnvironmentVariable('registerNew', ()=> {",
+					"  const registrRequest = {",
+					"    url: pm.environment.get('url') + 'users',",
+					"    method: 'POST',",
+					"    header: {",
+					"        'Content-Type': 'application/json',",
+					"    },",
+					"    body: {",
+					"        mode: 'raw',",
+					"            raw: JSON.stringify({",
+					"                \"user\": {",
+					"                \"username\": pm.variables.replaceIn('{{$randomUserName}}'),",
+					"                \"email\": pm.variables.replaceIn('{{$randomEmail}}').toLowerCase(),",
+					"                \"password\": 'Password1234'",
+					"                }",
+					"            })",
+					"    }",
+					"  };",
+					"    pm.sendRequest(registrRequest, (error, response) => {",
+					"        pm.environment.set(\"localToken\", response.json().user.token)",
+					"        console.log(error ? error : response.json());",
+					"});",
+					"})",
+					"//create second user ",
+					"postman.setEnvironmentVariable('registerSecond', ()=> {",
+					"  const registrRequest = {",
+					"    url: pm.environment.get('url') + 'users',",
+					"    method: 'POST',",
+					"    header: {",
+					"        'Content-Type': 'application/json',",
+					"    },",
+					"    body: {",
+					"        mode: 'raw',",
+					"            raw: JSON.stringify({",
+					"                \"user\": {",
+					"                \"username\": pm.variables.replaceIn('{{$randomUserName}}'),",
+					"                \"email\": pm.variables.replaceIn('{{$randomEmail}}').toLowerCase(),",
+					"                \"password\": 'Password1234'",
+					"                }",
+					"            })",
+					"    }",
+					"  };",
+					"    pm.sendRequest(registrRequest, (error, response) => {",
+					"        pm.environment.set(\"localTokenSecond\", response.json().user.token)",
+					"        console.log(error ? error : response.json());",
+					"});",
+					"})",
+					"//delete article",
+					" postman.setEnvironmentVariable(\"deleteArticle\", () => {",
+					"     const deleteArticle = {",
+					"         url: pm.environment.get('url') + 'articles/' + pm.environment.get('localSlug'),",
+					"         method: 'DELETE',",
+					"         header: {",
+					"             'Content-type': 'application/json',",
+					"             'authorization': 'Token ' + pm.environment.get('localToken'),",
+					"         },",
+					"         body: {",
+					"             mode: 'none',",
+					"         },",
+					"     }",
+					"     pm.sendRequest(deleteArticle);",
+					"",
+					"});",
+					"//сreating article",
+					" postman.setEnvironmentVariable(\"createArticle\", () => {",
+					"     const createArticle = {",
+					"         url: pm.environment.get('url') + 'articles',",
+					"         method: 'POST',",
+					"         header: {",
+					"             'Content-type': 'application/json',",
+					"             'authorization': 'Token ' + pm.environment.get('localToken'),",
+					"         },",
+					"         body: {",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify({",
+					"                \"article\": {",
+					"                    \"title\": pm.variables.replaceIn(\"{{$randomLoremWord}}\"),",
+					"                    \"description\": pm.variables.replaceIn(\"{{$randomLoremSentence}}\"),",
+					"                    \"body\": pm.variables.replaceIn(\"{{$randomLoremParagraph}}\"),",
+					"                    \"tagList\": pm.variables.replaceIn(\"{{$randomLoremWord}}\"),",
+					"                }",
+					"            }),",
+					"         }",
+					"     }",
+					"    pm.sendRequest(createArticle, (error, response) => {",
+					"        pm.environment.set(\"localSlug\", response.json().article.slug)",
+					"        pm.environment.set(\"localTitle\", response.json().article.title)",
+					"        console.log(error ? error : response.json());",
+					"    })",
+					" });",
+					" //create second article",
+					"  postman.setEnvironmentVariable(\"createArticleSecond\", () => {",
+					"     const createArticle = {",
+					"         url: pm.environment.get('url') + 'articles',",
+					"         method: 'POST',",
+					"         header: {",
+					"             'Content-type': 'application/json',",
+					"             'authorization': 'Token ' + pm.environment.get('localTokenSecond'),",
+					"         },",
+					"         body: {",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify({",
+					"                \"article\": {",
+					"                    \"title\": pm.variables.replaceIn(\"{{$randomLoremWord}}\"),",
+					"                    \"description\": pm.variables.replaceIn(\"{{$randomLoremSentence}}\"),",
+					"                    \"body\": pm.variables.replaceIn(\"{{$randomLoremParagraph}}\"),",
+					"                    \"tagList\": pm.variables.replaceIn(\"{{$randomLoremWord}}\"),",
+					"                }",
+					"            }),",
+					"         }",
+					"     }",
+					"    pm.sendRequest(createArticle, (error, response) => {",
+					"        pm.environment.set(\"localSlugSecond\", response.json().article.slug)",
+					"        console.log(error ? error : response.json());",
+					"    })",
+					" });",
+					"",
+					"",
+					"//delete comment",
+					" postman.setEnvironmentVariable(\"deleteComment\", () => {",
+					"     const deleteComment = {",
+					"         url: pm.environment.get('url') + 'articles/' + pm.environment.get('localSlug') + 'comments' + pm.environment.get('commentId') ,",
+					"         method: 'DELETE',",
+					"         header: {",
+					"             'Content-type': 'application/json',",
+					"             'authorization': 'Token ' + pm.environment.get('localToken'),",
+					"         },",
+					"         body: {",
+					"             mode: 'none',",
+					"         },",
+					"     }",
+					"     pm.sendRequest(deleteComment);",
+					"",
+					"})",
+					"",
+					"//create comment",
+					" postman.setEnvironmentVariable(\"createComment\", () => {",
+					"     const createComment = {",
+					"         url: pm.environment.get('url') + 'articles/'+ pm.environment.get('localSlug') + '/comments',",
+					"         method: 'POST',",
+					"         header: {",
+					"             'Content-type': 'application/json',",
+					"             'authorization': 'Token ' + pm.environment.get('localToken'),",
+					"         },",
+					"         body: {",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify({",
+					"                \"comment\": {",
+					"                    \"body\": pm.variables.replaceIn(\"{{$randomLoremSentence}}\"),",
+					"                }",
+					"            }),",
+					"         }",
+					"     }",
+					"     pm.sendRequest(createComment, (error, response) => {",
+					"        pm.environment.set(\"commentId\", response.json().comment.id)",
+					"        console.log(error ? error : response.json());",
+					"    })",
+					" })",
+					" //create second comment",
+					" postman.setEnvironmentVariable(\"createCommentSecond\", () => {",
+					"     const createComment = {",
+					"         url: pm.environment.get('url') + 'articles/'+ pm.environment.get('localSlugSecond') + '/comments',",
+					"         method: 'POST',",
+					"         header: {",
+					"             'Content-type': 'application/json',",
+					"             'authorization': 'Token ' + pm.environment.get('localTokenSecond'),",
+					"         },",
+					"         body: {",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify({",
+					"                \"comment\": {",
+					"                    \"body\": pm.variables.replaceIn(\"{{$randomLoremSentence}}\"),",
+					"                }",
+					"            }),",
+					"         }",
+					"     }",
+					"     pm.sendRequest(createComment, (error, response) => {",
+					"        pm.environment.set(\"commentIdSecond\", response.json().comment.id)",
+					"        console.log(error ? error : response.json());",
+					"    })",
+					" })"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "localPassword",
+			"value": "12345Qwert!",
+			"type": "string"
+		},
+		{
+			"key": "url",
+			"value": "https://api.realworld.io/api/",
+			"type": "string"
+		}
+	]
+}
